@@ -1,0 +1,3 @@
+nestedclass.TestAnnonymousInner1$1
+nestedclass.Eatable
+nestedclass.TestAnnonymousInner1
