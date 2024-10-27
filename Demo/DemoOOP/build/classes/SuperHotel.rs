@@ -1,2 +1,0 @@
-SuperHotel
-Hotel

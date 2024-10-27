@@ -1,3 +1,0 @@
-nestedclass.TestAnonymousInner$1
-nestedclass.Shape
-nestedclass.TestAnonymousInner
