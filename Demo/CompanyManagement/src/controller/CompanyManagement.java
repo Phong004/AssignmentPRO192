@@ -115,22 +115,16 @@ public class CompanyManagement {
             if (emp instanceof TeamLeader) {
                 TeamLeader tl = (TeamLeader) emp;
                 List<String> plList = tl.getProgrammingLangs();
-                for (String p : listPL) {
-                    if (!plList.contains(listPL)) {
-                        continue;
-                    }
+                if (plList.stream().anyMatch(listPL::contains)) {
+                    list.add(tl);
                 }
-                list.add(tl);
                 continue;
             }
             Developer dev = (Developer) emp;
             List<String> plList = dev.getProgrammingLangs();
-            for (String p : listPL) {
-                if (!plList.contains(listPL)) {
-                    continue;
-                }
+            if (plList.stream().anyMatch(listPL::contains)) {
+                list.add(dev);
             }
-            list.add(dev);
         }
         return list;
     }
