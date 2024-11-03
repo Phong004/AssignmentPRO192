@@ -9,6 +9,6 @@ package model;
  *
  * @author phong
  */
-public class ITextFileOutPut {
+public interface ITextFileOutPut {
     
 }

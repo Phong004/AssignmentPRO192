@@ -4,29 +4,40 @@
  * and open the template in the editor.
  */
 package model;
+import java.io.Serializable;
+import java.util.Objects;
+import java.lang.Math;
 
 /**
  *
  * @author phong
  */
-public abstract class Employee {
 
-    private String empID;
+public abstract class Employee implements ITextFileOutPut, Serializable {
+
+    private final String empID;
     private String empName;
     private double baseSal;
     
-    private String capitalizeString(String string) {
-        char[] chars = string.toLowerCase().toCharArray();
-        boolean found = false;
-        for (int i = 0; i < chars.length; i++) {
-            if (!found && Character.isLetter(chars[i])) {
-                chars[i] = Character.toUpperCase(chars[i]);
-                found = true;
-            } else if (Character.isWhitespace(chars[i])) {
-                found = false;
+    private static String capitalizeString(String name) {
+        name = name.trim().toLowerCase();
+        char[] charArr = name.toCharArray();
+        boolean first = true;
+        String re = "";
+        for (char c : charArr) {
+            if (first && Character.isLetter(c)) {
+                re = re.concat(String.valueOf(c).toUpperCase());
+                first = false;
+            }
+            else if (!first && Character.isWhitespace(c)) {
+                re = re.concat(String.valueOf(c));
+                first = true;
+            }
+            else if (Character.isLetter(c)) {
+                re = re.concat(String.valueOf(c));
             }
         }
-        return String.valueOf(chars).trim();
+        return re;
     }
 
     public Employee(String empID, String empName, double baseSal) {

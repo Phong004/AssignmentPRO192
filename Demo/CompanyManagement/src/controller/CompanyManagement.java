@@ -1,6 +1,5 @@
 package controller;
 
-import fileio.IFileReadWrite;
 import model.*;
 import fileio.*;
 
@@ -13,17 +12,17 @@ import java.util.Comparator;
 public class CompanyManagement {
 
     private List<Employee> empList;
-    
+
     public CompanyManagement() {
         empList = load();
         if (empList == null || empList.isEmpty()) {
             empList = new ArrayList<>();
-        } 
+        }
     }
-    
+
     private List<Employee> load() {
         try {
-            IFileReadWrite file = new EmployeeFileText();
+            IFileReadWrite file = new EmployeeFileBinary();
             return file.read();
         } catch (Exception e) {
             return null;
@@ -39,8 +38,7 @@ public class CompanyManagement {
                 throw new Exception("The code existed!");
             } else if (emp == null) {
                 throw new Exception("The Employee is null!");
-            } 
-            else {
+            } else {
                 empList.add(emp);
             }
         } catch (Exception e) {
@@ -53,8 +51,7 @@ public class CompanyManagement {
             int index = empList.indexOf(updateEmp.getEmpID());
             if (index < 0) {
                 throw new Exception("Employee does not exist!");
-            }
-            else {
+            } else {
                 empList.set(index, updateEmp);
             }
         } catch (Exception e) {
@@ -94,6 +91,9 @@ public class CompanyManagement {
             }
         }
         for (Employee emp : empList) {
+            if (!(emp.getClass().getSimpleName().equals("Tester"))) {
+                continue;
+            }
             Tester te = (Tester) emp;
             if (te.getSalary() == highestSal) {
                 list.add(te);
@@ -107,15 +107,30 @@ public class CompanyManagement {
         List<String> listPL = new ArrayList<>();
         listPL.addAll(Arrays.asList(str));
         List<Employee> list = new ArrayList<>();
-        
+
         for (Employee emp : empList) {
             if (!(emp instanceof Developer)) {
                 continue;
             }
-            Developer dev = (Developer) emp;
-            if (dev.getProgrammingLangs().contains(listPL)) {
-                list.add(dev);
+            if (emp instanceof TeamLeader) {
+                TeamLeader tl = (TeamLeader) emp;
+                List<String> plList = tl.getProgrammingLangs();
+                for (String p : listPL) {
+                    if (!plList.contains(listPL)) {
+                        continue;
+                    }
+                }
+                list.add(tl);
+                continue;
             }
+            Developer dev = (Developer) emp;
+            List<String> plList = dev.getProgrammingLangs();
+            for (String p : listPL) {
+                if (!plList.contains(listPL)) {
+                    continue;
+                }
+            }
+            list.add(dev);
         }
         return list;
     }
@@ -143,10 +158,6 @@ public class CompanyManagement {
         return null;
     }
 
-    public List<Employee> getAllEmployee() {
-        return empList;
-    }
-
     public boolean isExistCode(String code) {
         return (searchByID(code) != null);
     }
@@ -163,25 +174,26 @@ public class CompanyManagement {
         }
         return false;
     }
-    
+
     public List<Employee> sortBySalaryAndName() {
         Comparator com = new Comparator<Employee>() {
             @Override
             public int compare(Employee emp1, Employee emp2) {
                 if (emp1.getEmpName().compareTo(emp2.getEmpName()) == 0) {
                     return Double.compare(emp1.getSalary(), emp2.getSalary());
+                } else {
+                    return emp1.getEmpName().compareTo(emp2.getEmpName());
                 }
-                else return emp1.getEmpName().compareTo(emp2.getEmpName());
             }
         };
         List<Employee> list = empList;
         Collections.sort(list, com);
         return list;
     }
-    
+
     public boolean save() {
         try {
-            IFileReadWrite file = new EmployeeFileText();
+            IFileReadWrite file = new EmployeeFileBinary();
             return file.write(empList);
         } catch (Exception e) {
             return false;

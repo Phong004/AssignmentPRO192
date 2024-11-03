@@ -1,5 +1,7 @@
 package viewer;
 
+// Không biết sao nhưng mà file .dat của em mở nhìn thì nó rỗng nhưng mà chạy vẫn load được data.
+
 import java.util.Collections;
 import controller.CompanyManagement;
 import model.*;
@@ -156,7 +158,7 @@ public class Main {
             String name = Inputter.inputStr("Enter updated Tester name: ");
             double baseSal = Inputter.inputDouble("Enter updated Tester base salary: ");
             double bonus = Inputter.inputDouble("Enter updated Tester bonus rate: ");
-            String type = Inputter.inputNonBlankStr("Enter updated Tester type");
+            String type = Inputter.inputNonBlankStr("Enter updated Tester type: ");
             tester.setEmpName(name);
             tester.setBaseSal(baseSal);
             tester.setBonusRate(bonus);
@@ -174,7 +176,7 @@ public class Main {
             Developer dev = (Developer) emp;
             String name = Inputter.inputStr("Enter updated Developer name: ");
             double baseSal = Inputter.inputDouble("Enter updated Developer base salary: ");
-            String team = Inputter.inputNonBlankStr("Enter updated Developer team");
+            String team = Inputter.inputNonBlankStr("Enter updated Developer team: ");
             String pl = Inputter.inputNonBlankStr("Enter updated Developer Programming languages: ");
             List<String> listPL = Arrays.asList(pl.split(","));
             int expYear = Inputter.inputInt("Enter updated Developer experience year: ");
@@ -196,7 +198,7 @@ public class Main {
             TeamLeader tl = (TeamLeader) emp;
             String name = Inputter.inputStr("Enter updated Team Leader name: ");
             double baseSal = Inputter.inputDouble("Enter updated Team Leader base salary: ");
-            String team = Inputter.inputNonBlankStr("Enter updated Team Leader team");
+            String team = Inputter.inputNonBlankStr("Enter updated Team Leader team: ");
             String pl = Inputter.inputNonBlankStr("Enter updated Team Leader Programming languages: ");
             List<String> listPL = Arrays.asList(pl.split(","));
             int expYear = Inputter.inputInt("Enter updated Team Leader experience year: ");
@@ -236,7 +238,8 @@ public class Main {
     private void searchEmployee() {
         String[] options = {"Search all employee information whose name contains the search text",
             "Search Tester with the highest salary",
-            "Search Developer proficient in the programming language"
+            "Search Developer proficient in the programming language",
+            "Return to Main Menu"
         };
         int choice = 0;
         do {
@@ -311,5 +314,5 @@ public class Main {
         List<Employee> empList = cm.getAllEmployees();
         printList(empList);
     }
-
+    
 }
